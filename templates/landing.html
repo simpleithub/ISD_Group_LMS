@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ISD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body.landing {
+            background: linear-gradient(135deg, #0b0e14, #1a202c);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: rgba(26, 32, 44, 0.8);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            width: 100%;
+            max-width: 400px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .form-container h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4a90e2, #2b6cb0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            border-radius: 8px;
+            background: rgba(11, 14, 20, 0.8);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-container input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+            outline: none;
+        }
+
+        .form-container button {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .form-container p {
+            color: #a0aec0;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .form-container a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .form-container a:hover {
+            color: #2b6cb0;
+        }
+
+        .logo-landing {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #4a90e2, #2b6cb0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+
+        .form-switch {
+            display: none;
+        }
+
+        .form-switch.active {
+            display: block;
+        }
+
+        /* Flash messages */
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+
+        .flash-message.error {
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .flash-message.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+    </style>
+</head>
+<body class="landing">
+    <div class="form-container">
+        <div class="logo-landing">ISD</div>
+        
+        <!-- Sign In Form -->
+        <div id="signin-form" class="form-switch active">
+            <h2>Welcome Back</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+            </form>
+            <p>Don't have an account? <a onclick="toggleForm('signup')">Sign up</a></p>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div id="signup-form" class="form-switch">
+            <h2>Create Account</h2>
+            <form method="POST" action="/signup">
+                <input type="text" name="username" placeholder="Choose Username" required>
+                <input type="password" name="password" placeholder="Choose Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a onclick="toggleForm('signin')">Sign in</a></p>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm(form) {
+            if (form === 'signup') {
+                document.getElementById('signin-form').classList.remove('active');
+                document.getElementById('signup-form').classList.add('active');
+            } else {
+                document.getElementById('signup-form').classList.remove('active');
+                document.getElementById('signin-form').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
